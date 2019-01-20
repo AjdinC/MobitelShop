@@ -1,0 +1,97 @@
+﻿@model RS1_P120_MobitelShop.Areas.ModulAdministracija.Models.DobavljaciPrikaziVM
+@using RS1_P120_MobitelShop.Areas.ModulAdministracija.Models
+@{
+    //Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <link href="~/Areas/ModulAdministracija/Content/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/Areas/ModulAdministracija/Content/Scripts/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="content-wrapper">
+        <div class="container-fluid">
+            <!-- Breadcrumbs-->
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="/ModulAdministracija/AdminHome">Admin home</a>
+                </li>
+                <li class="breadcrumb-item active">Dobavljači</li>
+            </ol>
+            <div class="row">
+                <div class="table">
+                    <table class="table" style="width:99%">
+                        <thead>
+                            <tr>
+                                <th>Naziv</th>
+                                <th>Email</th>
+                                <th>Telefon</th>
+                                <th>Adresa</th>
+                                <th>Skladište dobavljača</th>
+                                <th>Grad</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (DobavljaciPrikaziVM.DobavljaciInfo x in Model.dobavljaciStavke)
+                            {
+                                <tr>
+                                    <td>
+                                        @x.Naziv
+                                    </td>
+                                    <td>@x.Email</td>
+                                    <td>@x.Telefon</td>
+                                    <td>@x.Adresa</td>
+                                    <td>@x.skladista</td>
+                                    <td>@x.Grad</td>
+                                    <td>
+                                        <div class="btn-group open">
+                                            <a class="btn btn-primary" href="#"><i class="fa fa-user fa-fw"></i>Izvrši izmjene</a>
+                                            <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
+                                                @*<span class="fa fa-caret-down" title="Toggle dropdown menu"></span>*@
+                                            </a>
+                                            <ul class="dropdown-menu" style="padding:5px">
+                                                <li style="padding:5px;text-decoration:none">
+                                                    @Ajax.ActionLink(" Uredi", "Uredi", new { id = x.Id }, new AjaxOptions() { UpdateTargetId = "uredi" }, new { @class = "btn btn-warning fa fa-pencil" })
+
+                                               
+                                                </li>
+                                                <li style="padding:5px">
+                                                    @Ajax.ActionLink(" Obriši", "Obrisi", new { id = x.Id }, new AjaxOptions() { UpdateTargetId = "obrisi" }, new { @class = "btn btn-danger fa fa-trash-o" })
+
+                                                 
+                                                </li>
+                                                @*<li><a href="#"><i class="fa fa-ban fa-fw"></i> Ban</a></li>
+                <li class="divider"></li>
+                <li><a href="#"><i class="fa fa-unlock"></i> Make admin</a></li>*@
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                       
+                    </table>
+                    <div id="uredi" class="table-bordered">
+
+                    </div>
+                </div>
+                
+             <div>
+                 
+                    @Html.ActionLink("Dodaj", "Dodaj", new { @class = "btn btn-primary" })
+             </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="~/Areas/ModulAdministracija/Content/Scripts/jquery-3.1.1.min.js"></script>
+    <script src="~/Areas/ModulAdministracija/Content/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,57 @@
+﻿@model RS1_P120_MobitelShop.Areas.ModulAdministracija.Models.PopustEditVM
+@{
+    //Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Edit</title>
+</head>
+<body>
+    <div class="content-wrapper">
+        <div class="container-fluid">
+            <!-- Breadcrumbs-->
+            <ol class="breadcrumb" style="width:60%">
+                <li class="breadcrumb-item">
+                    <a href="/ModulAdministracija/AdminHome">Admin home</a>
+                </li>
+                <li class="breadcrumb-item active">Dodavanje popusta za odabrani mobitel</li>
+            </ol>
+            <div class="table-success" style="width:60%">
+                <div id="page-wrapper">
+                    <div style="margin-left:20px; margin-right:20px; padding-bottom:3px">
+                        @using (Html.BeginForm("Snimi", "Popust"))
+                        {
+                            @*@Html.HiddenFor(model=> model.Id)*@
+                            @*@Html.HiddenFor(model => model.ArtikalId)*@
+                            <div>
+                                <span>Početak popusta</span>
+                                @Html.TextBoxFor(model => model.datumOd, "{0:HH:mm:ss, dd/MMM/yyyy }",new { @class = "form-control" })
+                            </div>
+                            <div>
+                                <span>Kraj popusta</span>
+                                @Html.TextBoxFor(model => model.datumDo, "{0:HH:mm:ss, dd/MMM/yyyy }",new { @class = "form-control" })
+                            </div>
+                            <div>
+                                <span>Uređaj na popustu</span>
+                                @Html.DropDownListFor(model => model.ArtikalId, Model.artikli, new { @class = "form-control" })
+                            </div>
+                            <div>
+                                <span>Iznos popusta u procentima</span>
+                                @Html.TextBoxFor(model => model.iznosPopusta, new { @class = "form-control" })
+                            </div>
+                            <br />
+                            <input type="submit" value="Snimi" />
+                            <br />
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

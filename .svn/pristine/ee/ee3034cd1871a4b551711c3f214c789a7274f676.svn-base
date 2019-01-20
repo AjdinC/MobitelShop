@@ -1,0 +1,25 @@
+﻿@model RS1_P120_MobitelShop.Areas.ModulAdministracija.Models.PopustPrikaziVM
+           @using RS1_P120_MobitelShop.Areas.ModulAdministracija.Models
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Prikazi</title>
+</head>
+<body>
+    <div id="popust"> 
+        <p>
+            @foreach(PopustPrikaziVM.PopustInfo x in Model.popustNovi)
+            {              
+             <b class="btn btn-warning">Artikal na akciji  </b>                <b class="fa fa-tag btn btn-danger ">@x.iznosPopusta %</b>
+             @Html.ActionLink(" ", "Obrisi", new { id = x.PopustId }, new { @class = "fa fa-trash" })
+            }
+        </p>
+    </div>
+</body>
+</html>

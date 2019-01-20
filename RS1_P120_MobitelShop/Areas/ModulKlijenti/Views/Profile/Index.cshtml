@@ -1,0 +1,102 @@
+﻿@model  RS1_P120_MobitelShop.Areas.ModulKlijenti.ViewModel.ProfilPodaciVM
+<link href="~/Areas/ModulAdministracija/Content/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+@if (Model.kojije == true)
+{
+    using (Html.BeginForm("Snimi", "Narudzba"))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(x => x.ArtikalId)
+        @Html.HiddenFor(x => x.KorpaId)
+        @Html.HiddenFor(x => Model.kojije)
+        <br />
+        <br />
+        <span style="font-size:20px;">
+            <b>Ukoliko želite možete promijeniti Vaše podatke vezane za narudžbu.</b>
+        </span>
+        <div class="form-group" style="margin-top:18px">
+            <label>E-mail</label>
+            @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @readonly = "true" })
+        </div>
+        <div class="form-group">
+            <label>Ime</label>
+            @Html.TextBoxFor(model => model.Ime, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Ime)
+        </div>
+        <div class="form-group">
+            <label>Prezime</label>
+            @Html.TextBoxFor(model => model.Prezime, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Prezime)
+        </div>
+        <div class="form-group">
+            <label>Grad</label>
+            @Html.DropDownListFor(model => model.GradId, Model.gradoviStavke, Model.GradNaziv, new { @class = "form-control", style = "height: 35px;" })
+        </div>
+        <div class="form-group">
+            <label>Telefon</label>
+            @Html.TextBoxFor(model => model.Telefon, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Telefon)
+            <span>Molimo Vas da koristite sljedeći format. <strong>Primjer: 38762xxxxxx (bez razmaka)</strong></span>
+        </div>
+
+        <div class="form-group">
+            <label>Adresa</label>
+            @Html.TextBoxFor(model => model.Adresa, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Adresa)
+        </div>
+        <br />
+        @Html.HiddenFor(x => x.GradId)
+        <p style="display:inline">
+            <a class="btn btn-info" onclick="history.go(-1); return false;" href="#">Nazad</a>
+
+            <input type="submit" value="Naruči" class="btn btn-info" style="float:right" />
+        </p>
+        <script src="~/Scripts/bootstrap.js"></script>
+    }
+}
+else
+{
+    using (Html.BeginForm("Snimi", "Profile"))
+    {
+        @Html.AntiForgeryToken()
+        <br />
+        <br />
+        <span style="font-size:25px;">
+            <b>Dobrodošli @(Model.Korisnik != null ? Model.Korisnik.Ime + " " + Model.Korisnik.Prezime : " ")</b>
+        </span>
+        <br />
+        <br />
+        <div class="form-group">
+            <label>E-mail</label>
+            @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @readonly = "true" })
+        </div>
+        <div class="form-group">
+            <label>Ime</label>
+            @Html.TextBoxFor(model => model.Ime, new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            <label>Prezime</label>
+            @Html.TextBoxFor(model => model.Prezime, new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            <label>Grad</label>
+            @Html.DropDownListFor(model => model.GradId, Model.gradoviStavke, Model.GradNaziv, new { @class = "form-control", style = "height: 35px;" })
+        </div>
+        <div class="form-group">
+            <label>Telefon</label>
+            @Html.TextBoxFor(model => model.Telefon, new { @class = "form-control" })
+        </div>
+
+        <div class="form-group">
+            <label>Adresa</label>
+            @Html.TextBoxFor(model => model.Adresa, new { @class = "form-control" })
+        </div>
+        <br />
+        @Html.HiddenFor(x => x.GradId)
+
+        <input type="submit" value="Spremi" class="btn btn-info" style="float:right" /><br /><br />
+
+        <script src="~/Scripts/bootstrap.js"></script>
+    }
+}

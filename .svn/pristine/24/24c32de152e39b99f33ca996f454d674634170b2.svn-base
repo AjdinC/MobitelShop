@@ -1,0 +1,151 @@
+﻿@using RS1_P120_MobitelShop.Areas.ModulAdministracija.Models
+@using RS1_P120_MobitelShop.Models
+@model RS1_P120_MobitelShop.Areas.ModulAdministracija.Models.ArtikalPrikaziVM
+@using PagedList.Mvc;
+@{
+    //Layout = null;
+    int broj = 1;
+    string napomena = (string)ViewData["opomena"];
+}
+
+<link href="~/Areas/ModulAdministracija/Content/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+<link href="~/Areas/ModulAdministracija/Content/vendor/bootstrap/css/bootstrap.css" rel="stylesheet" />
+<link href="~/Areas/ModulAdministracija/Content/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+<link href="~/Areas/ModulAdministracija/Content/vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet" />
+<link href="~/Areas/ModulAdministracija/Content/css/sb-admin.css" rel="stylesheet" />
+<link href="/Content/PagedList.css" rel="stylesheet" type="text/css" />
+<link href="~/Areas/ModulAdministracija/Content/bootstrap-lightbox/slikaDizajn.css" rel="stylesheet" />
+<link href="~/Areas/ModulAdministracija/Content/bootstrap-lightbox/slikaDizajn - Copy.css" rel="stylesheet" />
+<div id="divSearch">
+    <div class="content-wrapper">
+        <div class="container-fluid">
+            <!-- Breadcrumbs-->
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="/ModulAdministracija/AdminHome">Admin home</a>
+                </li>
+                <li class="breadcrumb-item active">Artikli</li>
+            </ol>
+            <div class="row">
+                <div id="page-wrapper">
+                    <div style="margin-left:40px; padding-bottom:3px">
+                        @using (Ajax.BeginForm("Prikazi", "Artikal", new AjaxOptions
+                {
+
+                    UpdateTargetId = "divSearch"
+                }))
+                        {
+                            <form>
+                                <b class="fa fa-search fa-2x"></b> @Html.TextBox("searchStringMarka", null, new { @class = "fa fa-search", @style = "width:300px;border-radius:2px;border:1px solid grey;height:30px;padding:5px;autocomplete:off", @placeholder = "Ime proizvoda, brend telefona" })
+                                <b>Cijena</b>   @Html.TextBox("CijenaOd", null, new { @style = "width:70px;border-radius:2px;border:1px solid grey;height:30px;padding:5px", @placeholder = "OD" })
+                                <b></b>    @Html.TextBox("CijenaDo", null, new { @style = "width:70px;border-radius:2px;border:1px solid grey;height:30px;padding:5px", @placeholder = "DO" })
+
+                                <button type="submit" value="Prikaži" class="btn btn-outline-info  fa fa-search">
+                                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                                </button>
+                            </form>
+                            <br />
+                        }
+                      <div class="row">
+
+                          <div>
+                              @if (napomena != null)
+                              {   
+                                <div class="alert alert-warning" role="alert">
+                                     @napomena
+                                </div>
+                              }
+                                  
+</div>
+                            @foreach (var x in Model.ArtikalPageList)
+                            {
+                               
+                                <div style="box-shadow: -1px 3px 25px #000; margin-bottom:20px;padding-top:0px;width:250px;padding-bottom:0px;padding:10px;margin-right:9px;background-color:white">
+                                    <br />
+                                    @Html.Action("Prikazi", "Popust", new { id = x.Id, @style = "border:1px" })
+                                    <div class="img-fluid">
+                                        <a data-max-width="500">
+                                            <img src="@x.Slika" class="img-fluid cursor" onclick="openModal();currentSlide(@broj)" style="width:250px;height:185px" />
+                                        </a>
+
+                                        <div class="caption">
+                                            <p><b>Brend telefona: </b>@x.Marka</p>
+                                            <p><b>Model telefona:<br /></b>@x.Model</p>
+                                            @*<p><b>Šifra: </b>@x.sifraArtikla</p>*@
+                                            <p><b>Garancija: </b>@x.Garancija</p>
+                                            <p><b>Cijena: </b>@x.Cijena KM</p>
+
+                                            <p>
+                                                <div class="row">
+                                                    <div class="col-md-5">
+                                                        @Ajax.ActionLink(" Detalji", "Detalji", new { id = x.Id }, new AjaxOptions() { UpdateTargetId = "divSearch" }, new { @class = "btn btn-info fa fa-list" })
+                                                    </div>
+                                                    <div class="col-md-4">
+
+                                                        @Ajax.ActionLink(" Uredi", "Uredi", new { id = x.Id }, new AjaxOptions() { UpdateTargetId = "divSearch" }, new { @class = "btn btn-warning fa fa-edit", @style = "display-block" })
+                                                     @*@Html.ActionLink("Uredi", "Uredi", new  { id = x.Id })*@
+
+                                                    </div>
+                                                    <div class="col-md-3">
+
+                                                        @Ajax.ActionLink(" ", "Obrisi", new { id = x.Id }, new AjaxOptions() { UpdateTargetId = "specifikacije" }, new { @class = "btn btn-danger fa fa-trash-o" })
+
+                                                    </div>
+                                                </div>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                { broj = broj + 1; }
+                            }
+               
+                         
+                         
+                          
+                          
+                            <div id="specifikacije">
+
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <div class="form-group">
+            <div class="col-sm-10">
+                Stranica @(Model.ArtikalPageList.PageCount < Model.ArtikalPageList.PageNumber ? 0 : Model.ArtikalPageList.PageNumber) od @Model.ArtikalPageList.PageCount
+                @Html.PagedListPager(Model.ArtikalPageList, page => Url.Action("Prikazi", new
+   {
+       page,
+       currentFilter = ViewBag.CurrentFilter,
+       tipID = ViewBag.tipID,
+       CijenaOd = ViewBag.CijenaOd,
+       CijenaDo = ViewBag.CijenaDo
+   }))
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="myModal" class="modal" style="margin-top:56px;width:83%;margin-left:250px;">
+    <span class="close cursor" onclick="closeModal()">
+        &times;
+    </span>
+    <div class="modal-content">
+        @foreach (var x in Model.ArtikalPageList)
+        {
+            <div class="mySlides" style="width:550px;height:550px;">
+                <img src="@x.Slika" style="width:100%; height:100%;"/>
+            </div>
+        }
+    </div>
+</div>
+
+<script src="~/Areas/ModulAdministracija/Content/bootstrap-lightbox/slikaMobitela.js"></script>
+

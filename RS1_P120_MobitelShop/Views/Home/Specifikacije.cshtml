@@ -1,0 +1,60 @@
+﻿@using RS1_P120_MobitelShop.Areas.ModulKlijenti.ViewModel;
+@model RS1_P120_MobitelShop.ViewModel.PocetnaIndexVM
+@{
+     Layout = null;
+} 
+<!DOCTYPE html> 
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Specifikacije</title>
+</head>
+<body>
+    <div>
+        @using (Html.BeginForm("IspisiSpecifikacije", "Home"))
+        {  
+            
+            for (int i = 0; i < Model.specifikacijeList.Count; i++)
+             {
+            if (Model.specifikacijeList[i].isRam == true) {
+            @Html.CheckBoxFor(m => Model.specifikacijeList[i].isRamChecked)
+            @Model.specifikacijeList[i].RamNaziv <br />
+            @Html.HiddenFor(m => Model.specifikacijeList[i].RamId)
+            @Html.HiddenFor(m => Model.specifikacijeList[i].RamNaziv)
+                }
+                }
+                        <hr />
+            for (int i = 0; i < Model.specifikacijeList.Count; i++)
+            {
+                if (Model.specifikacijeList[i].isEksternaMemorija == true) {
+                @Html.CheckBoxFor(m => Model.specifikacijeList[i].isEksternaMemorijaChecked)
+                @Model.specifikacijeList[i].EksternaMemorijaNaziv <br />
+                @Html.HiddenFor(m => Model.specifikacijeList[i].EksternaMemorijaId)
+                @Html.HiddenFor(m => Model.specifikacijeList[i].EksternaMemorijaNaziv)
+        }
+            }
+            <hr />
+            for (int i = 0; i < Model.specifikacijeList.Count; i++)
+            {
+                if (Model.specifikacijeList[i].isOperativniSistem == true) {
+                @Html.CheckBoxFor(m => Model.specifikacijeList[i].isOperativniSistemChecked)
+                @Model.specifikacijeList[i].OperativniSistemNaziv <br />
+                @Html.HiddenFor(m => Model.specifikacijeList[i].OperativniSistemId)
+                @Html.HiddenFor(m => Model.specifikacijeList[i].OperativniSistemNaziv)
+        }
+            }
+            <hr />
+             for (int i = 0; i < Model.specifikacijeList.Count; i++)
+            {
+                if (Model.specifikacijeList[i].isEkran == true) {
+                @Html.CheckBoxFor(m => Model.specifikacijeList[i].isEkranChecked)
+                @Model.specifikacijeList[i].EkranNaziv <br />
+                @Html.HiddenFor(m => Model.specifikacijeList[i].EkranId)
+                @Html.HiddenFor(m => Model.specifikacijeList[i].EkranNaziv)
+        }
+            } 
+                        <input type="submit" value="Prikazi" />
+        }
+    </div>
+</body>
+</html>

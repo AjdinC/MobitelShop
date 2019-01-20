@@ -1,0 +1,238 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+   
+    <link href="~/Areas/ModulAdministracija/Content/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <script src="~/Scripts/modernizr-2.6.2.js"></script>
+
+    <script src="~/Scripts/jquery-3.1.1.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+
+    
+
+    <script>
+        $(document).ready(function () {
+
+            var docHeight = $(window).height();
+            var footerHeight = $('#footer').height();
+            var footerTop = $('#footer').position().top + footerHeight;
+
+            if (footerTop < docHeight) {
+                $('#footer').css('margin-top', 10 + (docHeight - footerTop) + 'px');
+            }
+        });
+    </script>
+    <style>
+        .footer {
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            background-color: red;
+            color: white;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    @{
+        RS1_P120_MobitelShop.Models.Korisnik korisnik = RS1_P120_MobitelShop.Helper.Autentifikacija.GetLogiraniKorisnik(Context);
+    }
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="mainNav">
+        <div class="container-fluid ">
+
+            <div class="navbar-header" > 
+                <a href="~/Home/Index">
+                    <img src="https://www.cybrosys.com/images/mobileshop.png" style="width:150px;height:60px" />
+                </a>
+
+            </div>
+            <ul class="nav navbar-nav">
+                <li>
+                    <form class="navbar-form" action="/Home/Index">
+                        <div class="input-group" style="margin-left:10%">
+                            @Html.TextBox("searchTerm", null, new { id = "txtSearch", @class = "form-control", placeholder = "Unesite naziv modela...", style = "width:400px" })
+                            <div class="input-group-btn">
+                                <button class="btn btn-default" type="submit">
+                                    <i class="glyphicon glyphicon-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </li>
+            </ul>
+
+
+
+            @if (korisnik == null)
+        {
+            <div class="bs-example" style="margin-left:43%">
+
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="#myModal" data-toggle="modal"><i class="glyphicon glyphicon-log-in"></i>   Login/Sign up</a>
+                    </li>
+                </ul>
+
+                <div id="myModal" class="modal fade">
+                    <div class="modal-dialog">
+
+                        <div class="modal-content">
+                            <div id="zaAjaxRegistraciju">
+
+                                <div class="modal-header">
+                                    <h4>Login</h4>
+
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+
+                                </div>
+
+                                <div class="modal-body">
+
+                                    @using (Html.BeginForm("Provjera", "Autentifikacija", new { area = "" }))
+                                {
+                                    if (ViewData["Confirm"] != null)
+                                    {
+                                        <div>Poruka konfirmacije je poslana na Vaš mail. Molimo provjerite i potvrdite kako bi mogli koristiti svoj račun.</div>
+                                }
+                                <div style="margin-bottom: 25px" class="input-group">
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+
+                                    <input type="text" class="form-control" name="email" id="email" placeholder="korisničko mail" style="width:100%" required autofocus />
+                                </div>
+
+                                <div style="margin-bottom: 25px" class="input-group">
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+
+                                    <input type="password" class="form-control" id="password" name="password" placeholder="lozinka" style="width:100%" required />
+                                </div>
+                                <div class="input-group">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" id="zapamti" name="zapamti" class="arrow" value="1" />
+                                            Zapamti me
+                                        </label>
+                                    </div>
+                                </div>
+                                <div style="border-top: 1px solid#888; padding-top:15px; font-size:85%">
+                                    <span style="font-size:15px">Nemate profil</span> @Ajax.ActionLink("Registruj se", "Dodaj", "Autentifikacija", new AjaxOptions() { UpdateTargetId = "zaAjaxRegistraciju" })
+                                </div>
+                                <div style="margin-top:10px" class="form-group">
+
+                                    <div class="col-sm-12 controls">
+
+                                        <input type="submit" value="Prijavi se" class="btn btn-success" />
+                                    </div>
+                                </div>
+                                <br />
+                        }
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+    }
+            <ul class="nav navbar-nav navbar-right">
+
+                @if (korisnik != null)
+            {
+                <li>
+                    <a href="@Url.Action("Index", "Narudzba", new { Area = "ModulKlijenti" })">
+                        @Model.BrojArtikalaUKorpi <i class="glyphicon glyphicon-shopping-cart"></i>
+                    </a>
+                </li>
+
+        }
+                @if (korisnik != null)
+            {
+                <li>
+                    <a href="@Url.Action("Index", "Profile", new { Area = "ModulKlijenti",korisnikId=korisnik.Id })">
+                        <i class="glyphicon glyphicon-user"></i> Moj profil
+                    </a>
+                </li>
+                <li><a href="/Autentifikacija/Logout"><span class="glyphicon glyphicon-log-out"></span> Log out</a></li>
+
+        }
+            </ul>
+
+        </div>
+    </nav>
+
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <div class="container-fluid">
+        </div>
+    </div>
+
+    <footer id="footer" class="footer" style=" background-image: url(https://www.rnrfonline.com/wp-content/uploads/2016/03/footer-background.jpg); color:white; font-size:13px;width:100%;">
+        
+
+        <div class="row">
+            <div class="col-sm-2"> </div>
+
+            <div class="col-sm-4" style="">
+                <br />
+                Informacije: <hr>
+
+                <ul>
+                    <li><i class="glyphicon glyphicon-home"></i>   <strong>Adresa:</strong> SMA N 1 Penebel</li>
+                    <li><i class="glyphicon glyphicon-earphone"></i>   <strong>Telefon:</strong> +387 32-111-111</li>
+                    <li><i class="glyphicon glyphicon-envelope"></i>   <strong>Email:</strong> mobishopcenter@gmail.com</li>
+                </ul>
+                <br><br>
+            </div>
+            <div class="col-sm-4">
+                <br />
+                Mapa<hr>
+                <div>
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15786.919818414823!2d115.13604322508151!3d-8.428158753023983!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd22472c26fb23d%3A0x4158e54c55bfd62f!2sSMA+N+1+Penebel!5e0!3m2!1shr!2sba!4v1517509905294" width="300" height="100" frameborder="0" style="border:0" allowfullscreen></iframe>
+                </div>
+                <br>
+            </div>
+        </div>
+        <p style="text-align:center">&copy; @DateTime.Now.Year - MobiShop. All rights reserved.</p>
+
+    </footer>
+
+</body>
+</html>
+
+<script style="font-family:Arial" type="text/javascript">
+    $(function () {
+        $("#txtSearch").autocomplete({
+            source: '@Url.Action("GetStudents","Home")',
+            select: submitAutocompleteForm,
+            minLength: 2
+        });
+    });
+
+    var submitAutocompleteForm = function (event, ui) {
+        var $input = $(this);
+        $input.val(ui.item.label);
+        var $form = $input.parents("form:first");
+        $form.submit();
+    };
+</script> 
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#projectEditModal').modal('show');
+        });
+    </script>
+}

@@ -1,0 +1,53 @@
+﻿@using RS1_P120_MobitelShop.Areas.ModulKlijenti.ViewModel
+@model RS1_P120_MobitelShop.Areas.ModulKlijenti.ViewModel.KorpaPrikaziVM
+<link href="~/Areas/ModulAdministracija/Content/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+@if (Model.ListaKorpa.Count == 0)
+{
+    <h4 style="text-align:center">Nemate artikala u korpi...</h4>
+}
+else
+{
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Naziv</th>
+                <th>Iznos</th>
+                <th>Popust</th>
+                <th>Cijena proizvoda sa popustom</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (KorpaPrikaziRow kp in Model.ListaKorpa)
+            {
+                <tr onclick="window.location='/ModulKlijenti/Uporedi/Detalji?artikalId=@kp.ArtikalId';" style="cursor:pointer">
+                    <td>
+                        @Html.ActionLink(" ", "Ukloni", new { id = kp.KorpaId }, new { @class = "glyphicon glyphicon-remove", @style = "text-decoration: none" }) &nbsp;
+                    </td>
+                    <td style="cursor:pointer;">@kp.ModelNaziv</td>
+                    <td> @kp.Cijena KM</td>
+                    @if (kp.Popust != 0)
+                    {
+                        <td>   @kp.Popust %  </td>
+                    }
+                    else
+                    {
+                        <td>  ---  </td>
+                    }
+                    <td>
+                        @kp.CijenaSaPopustom KM
+                    </td>
+                    <td>
+                        @Html.ActionLink("Naruči", "Index", "Profile", new { Artikalid = kp.ArtikalId, KorpaId = kp.KorpaId, korisnikId = kp.KorisnikId }, new { @class = "btn btn-success" })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+}
